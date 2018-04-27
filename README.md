@@ -5,7 +5,7 @@ This repository aims to generate 30s excerpts from both the
 sources submitted by participants of [SiSEC MUS 2018](https://sisec.inria.fr/).
 
 Previews are generated from a pre-defined cut-list, such as those created using
-[sigsep-mus-cutlist-generator]((https://github.com/sigsep/sigsep-mus-cutlist-generator).
+[sigsep-mus-cutlist-generator](https://github.com/sigsep/sigsep-mus-cutlist-generator).
 
 ## Usage
 
