@@ -19,5 +19,5 @@ Previews are generated from a pre-defined cut-list, such as those created using
 
 3. Trim the estimated wav files (for example) using:
     ```
-    python generate_previews.py --musdb /path/to/my_estimations --previews 30s_previews.csv -o previews_output_dir --iswav
+    python generate_submission_previews.py --estimate_root_dir /path/to/my_estimations --previews 30s_previews.csv -o previews_output_dir
     ```
