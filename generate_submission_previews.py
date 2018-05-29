@@ -13,6 +13,8 @@ def generate_previews(estimate_root_dir, preview_file, output_dir=None):
         for preview in previews:
             track_name, start_sample, end_sample, start_s, end_s = preview
             prev_data[track_name] = {
+                'start_sample': int(start_sample),
+                'end_sample': int(end_sample),
                 'start': int(start_s),
                 'end': int(end_s)
             }
@@ -31,7 +33,9 @@ def generate_previews(estimate_root_dir, preview_file, output_dir=None):
                     # read the target audio
                     audio, rate = sf.read(target)
                     # cut the audio
-                    audio = audio[track_cut['start']:track_cut['end']]
+                    audio = audio[
+                        track_cut['start_sample']:track_cut['end_sample']
+                    ]
                     # compose new path in different root_location
                     P_out = P(output_dir, *target.parts[-3:])
                     # re-create the path structure
@@ -39,31 +43,31 @@ def generate_previews(estimate_root_dir, preview_file, output_dir=None):
                     # write out files
                     sf.write(P_out, audio, rate)
 
-            json_file = P(str(track.absolute()) + '.json')
-            with open(json_file) as json_file:
-                jf = json.load(json_file)
+                json_file = P(str(track.absolute()) + '.json')
+                with open(json_file) as json_file:
+                    jf = json.load(json_file)
 
-            for j, t in enumerate(jf['targets']):
-                cut_frames = []
-                for k, frame in enumerate(t['frames']):
-                    if (
-                        frame['time'] >= track_cut['start']
-                    ) and (
-                        (frame['time'] + frame['duration']) <= track_cut['end']
-                    ):
-                        frame['time'] = frame['time'] - track_cut['start']
-                        cut_frames.append(frame)
+                for j, t in enumerate(jf['targets']):
+                    cut_frames = []
+                    for k, frame in enumerate(t['frames']):
+                        if (
+                            frame['time'] >= track_cut['start']
+                        ) and (
+                            (frame['time'] + frame['duration']) <= track_cut['end']
+                        ):
+                            frame['time'] = frame['time'] - track_cut['start']
+                            cut_frames.append(frame)
 
-                jf['targets'][j]['frames'] = cut_frames
+                    jf['targets'][j]['frames'] = cut_frames
 
-            json_string = json.dumps(
-                jf,
-                indent=2,
-                allow_nan=True
-            )
-            J_out = P(str(P(output_dir, *target.parts[-3:-1])) + '.json')
-            with open(J_out, 'w+') as f:
-                f.write(json_string)
+                json_string = json.dumps(
+                    jf,
+                    indent=2,
+                    allow_nan=True
+                )
+                J_out = P(str(P(output_dir, *target.parts[-3:-1])) + '.json')
+                with open(J_out, 'w+') as f:
+                    f.write(json_string)
 
 
 if __name__ == '__main__':

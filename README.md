@@ -21,3 +21,9 @@ Previews are generated from a pre-defined cut-list, such as those created using
     ```
     python generate_submission_previews.py --estimate_root_dir /path/to/my_estimations --previews 30s_previews.csv -o previews_output_dir
     ```
+
+3.1. Using GNU Parallel to cut multiple submission folders
+
+```
+parallel python generate_submission_previews.py --estimate_root_dir /path/to/all_submissions/{/} --previews 30s_previews.csv  -o /path/to/cut_submissions/{/} ::: /path/to/all_submissions/*
+```
